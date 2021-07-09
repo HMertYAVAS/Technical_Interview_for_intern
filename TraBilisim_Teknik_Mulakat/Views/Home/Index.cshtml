@@ -1,0 +1,88 @@
+﻿<div class="d-flex align-items-center justify-content-center">
+    <form action="#" onsubmit="formGonder(); return false;">
+        <div class="mb-3 form-control-sm">
+            <label for="sarkiIsmi" class="form-label">Şarkı İsmi</label>
+            <input type="text" class="form-control" id="sarkiAdi" required>
+        </div>
+        <div class="mb-3 form-control-sm">
+            <label for="albumIsmi" class="form-label">Albüm İsmi</label>
+            <input type="text" class="form-control" id="albumIsmi">
+        </div>
+        <div class="mb-3 form-control-sm">
+            <label for="artist" class="form-label">Artist</label>
+            <input type="text" class="form-control" id="artist" required>
+        </div>
+        <div class="mb-3 form-control-sm">
+            <label for="sarkiSuresi" class="form-label">Şarkı Süresi</label>
+            <input type="text" class="form-control" id="sarkiSure">
+        </div>
+        <div class="mb-3 form-control-sm">
+            <label for="cikisYili" class="form-label">Çıkış Yılı</label>
+            <input type="number" class="form-control" id="cikisYili">
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Gönder</button>
+    </form>
+</div>
+<table class="table">
+    <thead>
+    <th>Id</th>
+    <th>Şarkı Adı</th>
+    <th>Albüm İsmi</th>
+    <th>Artist</th>
+    <th>Şarkı Süresi</th>
+    <th>Çıkış Yılı</th>
+    <th>Aksiyon</th>
+    </thead>
+    <tbody id="sarkilar">
+    </tbody>
+</table>
+
+<script>
+    function formGonder() {
+        axios.post("@Url.Action("SarkiKaydet")",
+            {
+                SarkiAdi: document.querySelector('#sarkiAdi').value,
+                AlbumIsmi: document.querySelector('#albumIsmi').value,
+                Artist: document.querySelector('#artist').value,
+                SarkiSure: document.querySelector('#sarkiSure').value,
+                CikisYili: document.querySelector('#cikisYili').value,
+            }
+        ).then(function (response) {
+            alert(response.data);
+            sarkilariGoruntule();
+        })
+    }
+    function sarkiSil(id) {
+        axios.post("@Url.Action("SarkiSil")", {
+            id: id 
+        }
+        ).then(function (response) {
+            sarkilariGoruntule();
+        })
+    }
+
+    function sarkilariGoruntule() {
+axios.get("@Url.Action("SarkiListele")"
+).then(function (response) {
+    let json = response.data;
+
+    let tableText = "";
+    json.forEach((sarki) => {
+        tableText += "<tr>";
+        tableText += "<td>" + sarki.Id + "</td>";
+        tableText += "<td>" + sarki.SarkiAdi + "</td>";
+        tableText += "<td>" + sarki.AlbumIsmi + "</td>";
+        tableText += "<td>" + sarki.Artist + "</td>";
+        tableText += "<td>" + sarki.SarkiSure + "</td>";
+        tableText += "<td>" + sarki.CikisYili + "</td>";
+        tableText += "<td><button onclick=\"sarkiSil("+sarki.Id+")\">Sil</button></td>";
+        tableText += "</tr>";
+    });
+
+    document.querySelector('#sarkilar').innerHTML = tableText;
+        })
+    }
+    sarkilariGoruntule();
+</script>
