@@ -11,6 +11,7 @@ namespace TraBilisim_Teknik_Mulakat.Controllers
 {
     public class HomeController : Controller
     {
+        //salt okunması için readonly
         private readonly TRABILISIMEntities1 db;
         public HomeController(){
         db = new TRABILISIMEntities1();
@@ -25,6 +26,7 @@ namespace TraBilisim_Teknik_Mulakat.Controllers
         {
             if (ModelState.IsValid) { 
             db.Muziks.Add(muzik);
+                //kayıt işlemi
             db.SaveChanges();
             return Content("Başarılı");
             }
@@ -37,7 +39,8 @@ namespace TraBilisim_Teknik_Mulakat.Controllers
         public JsonResult SarkiListele()
         {
             return Json(db.Muziks.ToList(), JsonRequestBehavior.AllowGet);
-    }
+        }
+
         [HttpPost]
         public ActionResult SarkiSil(int id)
         {
@@ -51,4 +54,4 @@ namespace TraBilisim_Teknik_Mulakat.Controllers
             return Content("Silinemedi.");
         }
     }
-    }
+}

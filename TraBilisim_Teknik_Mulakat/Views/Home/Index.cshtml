@@ -25,6 +25,8 @@
         <button type="submit" class="btn btn-primary">Gönder</button>
     </form>
 </div>
+
+<hr />
 <table class="table">
     <thead>
     <th>Id</th>
@@ -54,6 +56,7 @@
             sarkilariGoruntule();
         })
     }
+    
     function sarkiSil(id) {
         axios.post("@Url.Action("SarkiSil")", {
             id: id 
